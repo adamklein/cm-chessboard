@@ -13,6 +13,11 @@ See also: https://github.com/ornicar/lila/blob/master/COPYING.md
 <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 40 40">
 
     <title>cm-chessboard Staunty pieces and markers sprite</title>
+    <defs>
+        <marker id="arrowhead" markerWidth="4" markerHeight="8" refX="2.05" refY="2.01" orient="auto">
+            <path d="M0,0 V4 L3,2 Z" />
+        </marker>
+    </defs>
     <g id="Sprite-Staunty">
         <g id="wk" transform="matrix(0.78030303,0,0,0.78030303,0.99250091,1.3663636)">
             <path d="m 27.67,15.225 v -3.544 h 4.44 V 7.252 H 27.175 V 3.36 H 22.81 v 3.893 h -4.934 v 4.43 h 4.44 v 3.543" fill="#f0f0f0" stroke-linecap="round" stroke-width="1.2" stroke="#1e1e1e" id="path1542"/>

@@ -194,6 +194,16 @@ export class Chessboard {
         this.view.drawMarkers()
     }
 
+    addArrow(fromSquare, toSquare, color) {
+      this.state.addArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), color)
+      this.view.drawArrows()
+    }
+
+    removeArrows() {
+      this.state.removeArrows()
+      this.view.drawArrows()
+    }
+
     setOrientation(color) {
         this.state.orientation = color
         return this.view.redraw()

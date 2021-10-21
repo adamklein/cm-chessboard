@@ -107,10 +107,22 @@ export class ChessboardView {
         let cssClass = this.chessboard.props.style.cssClass ? this.chessboard.props.style.cssClass : "default"
         this.svg.setAttribute("class", "cm-chessboard border-type-" + this.chessboard.props.style.borderType + " " + cssClass)
         this.updateMetrics()
+
+        this.addSvgArrowHeadDefinitions()
         this.boardGroup = Svg.addElement(this.svg, "g", {class: "board"})
         this.coordinatesGroup = Svg.addElement(this.svg, "g", {class: "coordinates"})
         this.markersGroup = Svg.addElement(this.svg, "g", {class: "markers"})
         this.piecesGroup = Svg.addElement(this.svg, "g", {class: "pieces"})
+        this.arrowsGroup = Svg.addElement(this.svg, "g", {class: "arrows"})
+    }
+
+    addSvgArrowHeadDefinitions() {
+      let defs = Svg.addElement(this.svg, "defs")
+
+      for (var color of ['red', 'yellow', 'green', 'blue', 'gray', 'orange']) {
+        let m = Svg.addElement(defs, "marker", { id: `arrowhead-${color}`, markerWidth: 4, markerHeight: 8, refX: 2, refY: 2, orient: "auto"})
+        Svg.addElement(m, "path", { d: "M0,0 V4 L3,2 Z", fill: color })
+      }
     }
 
     updateMetrics() {
@@ -150,7 +162,8 @@ export class ChessboardView {
         this.drawCoordinates()
         this.drawMarkers()
         this.setCursor()
-        this.drawPieces(this.chessboard.state.squares)
+        this.drawArrows()
+        this.drawPieces()
     }
 
     // Board //
@@ -242,6 +255,50 @@ export class ChessboardView {
         }
     }
 
+    // Arrows //
+
+    drawArrows() {
+      while (this.arrowsGroup.firstChild) {
+        this.arrowsGroup.removeChild(this.arrowsGroup.firstChild)
+      } 
+      this.chessboard.state.arrows.forEach((arrow) => {
+        this.drawArrow(arrow)
+      })
+    }
+
+    drawArrow(arrow) {
+      function toColor(c) {
+        return (c === 'Y') ? 'yellow' : (c === 'R') ? 'red' : (c === 'G') ? 'green' : (c === 'B') ? 'blue' : c;
+      }
+
+      const startPoint = this.squareIndexToPoint(arrow.indexFrom)
+      const endPoint = this.squareIndexToPoint(arrow.indexTo)
+      const color = toColor(arrow.color)
+
+      let x1 = startPoint.x + this.squareWidth/2 
+      let y1 = startPoint.y + this.squareHeight/2
+      let x2 = endPoint.x + this.squareWidth/2
+      let y2 = endPoint.y + this.squareHeight/2
+
+      const sgn = (x2 - x1) >= 0 ? 1 : -1
+      const angle = Math.atan((y2 - y1)/(x2 - x1))
+      const xoffset = sgn * Math.cos(angle) * (1/4)*this.squareWidth
+      const yoffset = sgn * Math.sin(angle) * (1/4)*this.squareHeight
+
+      const arrowElement = Svg.addElement(this.arrowsGroup, "line", {
+        x1: x1 + xoffset,
+        y1: y1 + yoffset,
+        x2: x2 - xoffset,
+        y2: y2 - yoffset,
+        stroke: color,
+        'stroke-width': 6,
+        'stroke-linecap': "round",
+        opacity: 0.5,
+        'marker-end': `url(#arrowhead-${color})`,
+        'pointer-events': "none" 
+      })
+    }
+
     // Pieces //
 
     drawPieces(squares = this.chessboard.state.squares) {
@@ -261,6 +318,7 @@ export class ChessboardView {
         const pieceGroup = Svg.addElement(this.piecesGroup, "g")
         pieceGroup.setAttribute("data-piece", pieceName)
         pieceGroup.setAttribute("data-index", index)
+        pieceGroup.setAttribute("class", "piece")
         const point = this.squareIndexToPoint(index)
         const transform = (this.svg.createSVGTransform())
         transform.setTranslate(point.x, point.y)
@@ -268,7 +326,7 @@ export class ChessboardView {
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const pieceUse = Svg.addElement(pieceGroup, "use", {
             href: `${spriteUrl}#${pieceName}`,
-            class: "piece"
+            class: pieceName
         })
         // center on square
         const transformTranslate = (this.svg.createSVGTransform())

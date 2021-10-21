@@ -10,6 +10,7 @@ export class ChessboardState {
         this.squares = new Array(64).fill(null)
         this.orientation = undefined
         this.markers = []
+        this.arrows = []
         this.inputWhiteEnabled = false
         this.inputBlackEnabled = false
         this.inputEnabled = false
@@ -18,6 +19,14 @@ export class ChessboardState {
 
     setPiece(index, piece) {
         this.squares[index] = piece
+    }
+
+    addArrow(indexFrom, indexTo, color) {
+        this.arrows.push({indexFrom: indexFrom, indexTo: indexTo, color: color})
+    }
+
+    removeArrows() {
+        this.arrows = []
     }
 
     addMarker(index, type) {
