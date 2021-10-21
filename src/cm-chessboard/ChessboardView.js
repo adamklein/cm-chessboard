@@ -119,9 +119,9 @@ export class ChessboardView {
     addSvgArrowHeadDefinitions() {
       let defs = Svg.addElement(this.svg, "defs")
 
-      for (var color of ['red', 'yellow', 'green', 'blue', 'gray', 'orange']) {
-        let m = Svg.addElement(defs, "marker", { id: `arrowhead-${color}`, markerWidth: 4, markerHeight: 8, refX: 2, refY: 2, orient: "auto"})
-        Svg.addElement(m, "path", { d: "M0,0 V4 L3,2 Z", fill: color })
+      for (var id of [1, 2, 3, 4, 5, 6]) {
+        let m = Svg.addElement(defs, "marker", { id: `cm-chessboard-arrowhead-${id}`, markerWidth: 4, markerHeight: 8, refX: 2, refY: 2, orient: "auto" })
+        Svg.addElement(m, "path", { d: "M0,0 V4 L3,2 Z" })
       }
     }
 
@@ -267,14 +267,10 @@ export class ChessboardView {
     }
 
     drawArrow(arrow) {
-      function toColor(c) {
-        return (c === 'Y') ? 'yellow' : (c === 'R') ? 'red' : (c === 'G') ? 'green' : (c === 'B') ? 'blue' : c;
-      }
-
       const startPoint = this.squareIndexToPoint(arrow.indexFrom)
       const endPoint = this.squareIndexToPoint(arrow.indexTo)
-      const color = toColor(arrow.color)
-
+      const id = arrow.colorIndex
+      
       let x1 = startPoint.x + this.squareWidth/2 
       let y1 = startPoint.y + this.squareHeight/2
       let x2 = endPoint.x + this.squareWidth/2
@@ -290,12 +286,12 @@ export class ChessboardView {
         y1: y1 + yoffset,
         x2: x2 - xoffset,
         y2: y2 - yoffset,
-        stroke: color,
+        'class': `cm-chessboard arrows arrowhead-${id}`,
         'stroke-width': 6,
         'stroke-linecap': "round",
+        'marker-end': `url(#cm-chessboard-arrowhead-${id})`,
+        'pointer-events': "none",
         opacity: 0.5,
-        'marker-end': `url(#arrowhead-${color})`,
-        'pointer-events': "none" 
       })
     }
 
@@ -315,7 +311,9 @@ export class ChessboardView {
     }
 
     drawPiece(index, pieceName) {
-        const pieceGroup = Svg.addElement(this.piecesGroup, "g")
+        let color = pieceName.slice(0,1)
+        let name = pieceName.slice(1,2)
+        const pieceGroup = Svg.addElement(this.piecesGroup, "g", { color: (color === 'w') ? "#ffffff" : "#5f5955" })
         pieceGroup.setAttribute("data-piece", pieceName)
         pieceGroup.setAttribute("data-index", index)
         pieceGroup.setAttribute("class", "piece")
@@ -325,7 +323,7 @@ export class ChessboardView {
         pieceGroup.transform.baseVal.appendItem(transform)
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const pieceUse = Svg.addElement(pieceGroup, "use", {
-            href: `${spriteUrl}#${pieceName}`,
+            href: `${spriteUrl}#${name}`,
             class: pieceName
         })
         // center on square

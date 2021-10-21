@@ -59,7 +59,7 @@ export class Chessboard {
                 hoverMarker: MARKER_TYPE.frame // deprecated => moveToMarker // TODO remove in future
             },
             responsive: true, // resizes the board based on element size
-            animationDuration: 300, // pieces animation duration in milliseconds
+            animationDuration: 150, // pieces animation duration in milliseconds
             sprite: {
                 url: "./assets/images/chessboard-sprite.svg", // pieces and markers are stored as svg sprite
                 size: 40, // the sprite size, defaults to 40x40px
@@ -194,8 +194,8 @@ export class Chessboard {
         this.view.drawMarkers()
     }
 
-    addArrow(fromSquare, toSquare, color) {
-      this.state.addArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), color)
+    addArrow(fromSquare, toSquare, colorIndex=1) {
+      this.state.addArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), colorIndex)
       this.view.drawArrows()
     }
 

@@ -21,8 +21,8 @@ export class ChessboardState {
         this.squares[index] = piece
     }
 
-    addArrow(indexFrom, indexTo, color) {
-        this.arrows.push({indexFrom: indexFrom, indexTo: indexTo, color: color})
+    addArrow(indexFrom, indexTo, colorIndex=1) {
+        this.arrows.push({indexFrom: indexFrom, indexTo: indexTo, colorIndex: colorIndex})
     }
 
     removeArrows() {

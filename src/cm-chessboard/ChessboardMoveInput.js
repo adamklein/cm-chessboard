@@ -189,15 +189,18 @@ export class ChessboardMoveInput {
         if (this.draggablePiece) {
             throw Error("draggablePiece exists")
         }
+        let color = pieceName.slice(0,1)
+        let name = pieceName.slice(1,2)
         this.draggablePiece = Svg.createSvg(document.body)
         this.draggablePiece.classList.add("cm-chessboard-draggable-piece")
         this.draggablePiece.setAttribute("width", this.view.squareWidth)
         this.draggablePiece.setAttribute("height", this.view.squareHeight)
         this.draggablePiece.setAttribute("style", "pointer-events: none")
+        this.draggablePiece.setAttribute("color", (color === 'w') ? "#ffffff" : "#5f5955" )
         this.draggablePiece.name = pieceName
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const piece = Svg.addElement(this.draggablePiece, "use", {
-            href: `${spriteUrl}#${pieceName}`
+            href: `${spriteUrl}#${name}`
         })
         const scaling = this.view.squareHeight / this.chessboard.props.sprite.size
         const transformScale = (this.draggablePiece.createSVGTransform())
