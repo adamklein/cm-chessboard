@@ -50,7 +50,7 @@ export class ChessboardView {
 
         this.pointerDownListener = this.pointerDownHandler.bind(this)
         this.chessboard.element.addEventListener("mousedown", this.pointerDownListener)
-        this.chessboard.element.addEventListener("touchstart", this.pointerDownListener)
+        this.chessboard.element.addEventListener("touchstart", this.pointerDownListener, { passive: true })
 
         this.createSvgAndGroups()
         this.updateMetrics()
@@ -284,8 +284,8 @@ export class ChessboardView {
       const arrowElement = Svg.addElement(this.arrowsGroup, "line", {
         x1: x1 + xoffset,
         y1: y1 + yoffset,
-        x2: x2 - xoffset,
-        y2: y2 - yoffset,
+        x2: x2 - xoffset/2,
+        y2: y2 - yoffset/2,
         'class': `cm-chessboard arrows arrowhead-${id}`,
         'stroke-width': 6,
         'stroke-linecap': "round",
@@ -323,7 +323,7 @@ export class ChessboardView {
         pieceGroup.transform.baseVal.appendItem(transform)
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const pieceUse = Svg.addElement(pieceGroup, "use", {
-            href: `${spriteUrl}#${name}`,
+            href: `${spriteUrl}#sprite-${name}`,
             class: pieceName
         })
         // center on square

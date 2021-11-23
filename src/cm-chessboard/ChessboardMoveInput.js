@@ -200,7 +200,7 @@ export class ChessboardMoveInput {
         this.draggablePiece.name = pieceName
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const piece = Svg.addElement(this.draggablePiece, "use", {
-            href: `${spriteUrl}#${name}`
+            href: `${spriteUrl}#sprite-${name}`
         })
         const scaling = this.view.squareHeight / this.chessboard.props.sprite.size
         const transformScale = (this.draggablePiece.createSVGTransform())
@@ -222,10 +222,10 @@ export class ChessboardMoveInput {
                 pieceName = pieceElement.getAttribute("data-piece")
                 color = pieceName ? pieceName.substr(0, 1) : undefined
                 // allow scrolling, if not pointed on draggable piece
-                if (color === "w" && this.chessboard.state.inputWhiteEnabled ||
-                    color === "b" && this.chessboard.state.inputBlackEnabled) {
-                    e.preventDefault()
-                }
+                // if (color === "w" && this.chessboard.state.inputWhiteEnabled ||
+                //     color === "b" && this.chessboard.state.inputBlackEnabled) {
+                //     e.preventDefault()
+                // }
             }
             if (index) { // pointer on square
                 if (this.moveInputState !== STATE.waitForInputStart ||
