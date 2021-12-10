@@ -260,7 +260,7 @@ export class ChessboardView {
     drawArrows() {
       while (this.arrowsGroup.firstChild) {
         this.arrowsGroup.removeChild(this.arrowsGroup.firstChild)
-      } 
+      }
       this.chessboard.state.arrows.forEach((arrow) => {
         this.drawArrow(arrow)
       })
@@ -270,14 +270,19 @@ export class ChessboardView {
       const startPoint = this.squareIndexToPoint(arrow.indexFrom)
       const endPoint = this.squareIndexToPoint(arrow.indexTo)
       const id = arrow.colorIndex
-      
-      let x1 = startPoint.x + this.squareWidth/2 
+
+      let x1 = startPoint.x + this.squareWidth/2
       let y1 = startPoint.y + this.squareHeight/2
       let x2 = endPoint.x + this.squareWidth/2
       let y2 = endPoint.y + this.squareHeight/2
 
       const sgn = (x2 - x1) >= 0 ? 1 : -1
       const angle = Math.atan((y2 - y1)/(x2 - x1))
+
+      if (isNaN(angle)) {
+        return
+      }
+
       const xoffset = sgn * Math.cos(angle) * (1/4)*this.squareWidth
       const yoffset = sgn * Math.sin(angle) * (1/4)*this.squareHeight
 
