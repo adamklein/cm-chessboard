@@ -30,49 +30,49 @@
   opacity: 0.4; }
 
 :root {
-    --arrowhead-color-1: green;
-    --arrowhead-color-2: red;
-    --arrowhead-color-3: yellow;
-    --arrowhead-color-4: blue;
-    --arrowhead-color-5: gray;
-    --arrowhead-color-6: black;
+    --arrow-color-1: green;
+    --arrow-color-2: red;
+    --arrow-color-3: yellow;
+    --arrow-color-4: blue;
+    --arrow-color-5: gray;
+    --arrow-color-6: black;
 }
 
 #cm-chessboard-arrowhead-1 {
-    fill: var(--arrowhead-color-1); }
+    fill: var(--arrow-color-1); }
 
 #cm-chessboard-arrowhead-2 {
-    fill: var(--arrowhead-color-2); }
+    fill: var(--arrow-color-2); }
 
 #cm-chessboard-arrowhead-3 {
-    fill: var(--arrowhead-color-3); }
+    fill: var(--arrow-color-3); }
 
 #cm-chessboard-arrowhead-4 {
-    fill: var(--arrowhead-color-4); }
+    fill: var(--arrow-color-4); }
 
 #cm-chessboard-arrowhead-5 {
-    fill: var(--arrowhead-color-5); }
+    fill: var(--arrow-color-5); }
 
 #cm-chessboard-arrowhead-6 {
-    fill: var(--arrowhead-color-6); }
+    fill: var(--arrow-color-6); }
                                                 
-.cm-chessboard .arrows .arrowhead-1 {
-    stroke:var(--arrowhead-color-1); }
+.cm-chessboard .arrows .arrow-1 {
+    stroke:var(--arrow-color-1); }
 
-.cm-chessboard .arrows .arrowhead-2 {
-    stroke:var(--arrowhead-color-2); }
+.cm-chessboard .arrows .arrow-2 {
+    stroke:var(--arrow-color-2); }
 
-.cm-chessboard .arrows .arrowhead-3 {
-    stroke:var(--arrowhead-color-3); }
+.cm-chessboard .arrows .arrow-3 {
+    stroke:var(--arrow-color-3); }
 
-.cm-chessboard .arrows .arrowhead-4 {
-    stroke:var(--arrowhead-color-4); }
+.cm-chessboard .arrows .arrow-4 {
+    stroke:var(--arrow-color-4); }
 
-.cm-chessboard .arrows .arrowhead-5 {
-    stroke:var(--arrowhead-color-5); }
+.cm-chessboard .arrows .arrow-5 {
+    stroke:var(--arrow-color-5); }
 
-.cm-chessboard .arrows .arrowhead-6 {
-    stroke:var(--arrowhead-color-6); }
+.cm-chessboard .arrows .arrow-6 {
+    stroke:var(--arrow-color-6); }
                   
 .cm-chessboard .pieces, .cm-chessboard .markers {
   pointer-events: none; }
