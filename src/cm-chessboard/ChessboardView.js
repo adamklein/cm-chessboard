@@ -19,6 +19,16 @@ export const SQUARE_COORDINATES = [
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 ]
 
+function makeid(length) {
+  var result           = '';
+  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var charactersLength = characters.length;
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+  return result;
+}
+
 export class ChessboardView {
 
     constructor(chessboard, callbackAfterCreation) {
@@ -51,6 +61,8 @@ export class ChessboardView {
         this.pointerDownListener = this.pointerDownHandler.bind(this)
         this.chessboard.element.addEventListener("mousedown", this.pointerDownListener)
         this.chessboard.element.addEventListener("touchstart", this.pointerDownListener, { passive: true })
+
+        this.arrow_marker_scope = makeid(10)
 
         this.createSvgAndGroups()
         this.updateMetrics()
@@ -120,7 +132,15 @@ export class ChessboardView {
       let defs = Svg.addElement(this.svg, "defs")
 
       for (var id of [1, 2, 3, 4, 5, 6]) {
-        let m = Svg.addElement(defs, "marker", { id: `cm-chessboard-arrowhead-${id}`, markerWidth: 4, markerHeight: 8, refX: 2, refY: 2, orient: "auto" })
+        let m = Svg.addElement(defs, "marker", { 
+          id: `${this.arrow_marker_scope}-arrowhead-${id}`, 
+          markerWidth: 4, 
+          markerHeight: 8, 
+          refX: 2, 
+          refY: 2, 
+          orient: "auto",
+          fill: `var(--arrow-color-${id})`,
+        })
         Svg.addElement(m, "path", { d: "M0,0 V4 L3,2 Z" })
       }
     }
@@ -291,11 +311,12 @@ export class ChessboardView {
         y1: y1 + yoffset,
         x2: x2 - xoffset,
         y2: y2 - yoffset,
-        'class': `cm-chessboard arrows arrow-${id}`,
+        'stroke': `var(--arrow-color-${id})`,
         'stroke-width': 5,
         'stroke-linecap': "round",
-        'marker-end': `url(#cm-chessboard-arrowhead-${id})`,
+        'marker-end': `url(#${this.arrow_marker_scope}-arrowhead-${id})`,
         'pointer-events': "none",
+        'class': `cm-chessboard arrows arrow-${id}`,
         opacity: 0.5,
       })
     }
