@@ -30,12 +30,22 @@
   opacity: 0.4; }
 
 :root {
+    --white-piece: #FFFFFF;
+    --black-piece: #5F5955;
     --arrow-color-1: green;
     --arrow-color-2: red;
     --arrow-color-3: yellow;
     --arrow-color-4: blue;
     --arrow-color-5: gray;
     --arrow-color-6: black;
+}
+
+.white-piece {
+  color: var(--white-piece);
+}
+
+.black-piece {
+  color: var(--black-piece);
 }
                   
 .cm-chessboard .pieces, .cm-chessboard .markers {
