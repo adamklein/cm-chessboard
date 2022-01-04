@@ -339,17 +339,17 @@ export class ChessboardView {
     drawPiece(index, pieceName) {
         let color = pieceName.slice(0,1)
         let name = pieceName.slice(1,2)
-        const pieceGroup = Svg.addElement(this.piecesGroup, "g", { color: (color === 'w') ? "#ffffff" : "#5f5955" })
+        const pieceGroup = Svg.addElement(this.piecesGroup, "g")
         pieceGroup.setAttribute("data-piece", pieceName)
         pieceGroup.setAttribute("data-index", index)
-        pieceGroup.setAttribute("class", "piece")
+        pieceGroup.setAttribute("class", `${color == 'w' ? 'white-piece' : 'black-piece'}`)
         const point = this.squareIndexToPoint(index)
         const transform = (this.svg.createSVGTransform())
         transform.setTranslate(point.x, point.y)
         pieceGroup.transform.baseVal.appendItem(transform)
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const pieceUse = Svg.addElement(pieceGroup, "use", {
-            href: `${spriteUrl}#sprite-${name}`,
+            href: `${spriteUrl}#sprite-${name}${color}`,
             class: pieceName
         })
         // center on square
