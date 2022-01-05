@@ -31,7 +31,7 @@
 
 :root {
     --white-piece: #FFFFFF;
-    --black-piece: #5F5955;
+    --black-piece: #000000;
     --arrow-color-1: green;
     --arrow-color-2: red;
     --arrow-color-3: yellow;

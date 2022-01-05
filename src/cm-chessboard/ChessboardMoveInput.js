@@ -200,7 +200,7 @@ export class ChessboardMoveInput {
         this.draggablePiece.name = pieceName
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const piece = Svg.addElement(this.draggablePiece, "use", {
-            href: `${spriteUrl}#sprite-${name}`
+            href: `${spriteUrl}#sprite-${name}${color}`
         })
         const scaling = this.view.squareHeight / this.chessboard.props.sprite.size
         const transformScale = (this.draggablePiece.createSVGTransform())
