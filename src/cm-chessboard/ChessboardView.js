@@ -7,6 +7,7 @@
 import {ChessboardMoveInput} from "./ChessboardMoveInput.js"
 import {COLOR, INPUT_EVENT_TYPE, BORDER_TYPE} from "./Chessboard.js"
 import {ChessboardPiecesAnimation} from "./ChessboardPiecesAnimation.js"
+import _ from 'lodash'
 
 export const SQUARE_COORDINATES = [
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -48,9 +49,7 @@ export class ChessboardView {
             // noinspection JSUnresolvedVariable
             if (typeof ResizeObserver !== "undefined") {
                 // noinspection JSUnresolvedFunction
-                this.resizeObserver = new ResizeObserver(() => {
-                    this.handleResize()
-                })
+                this.resizeObserver = new ResizeObserver(_.debounce(() => this.handleResize(), 50, { leading: false, trailing: true }))
                 this.resizeObserver.observe(this.chessboard.element)
             } else {
                 this.resizeListener = this.handleResize.bind(this)
