@@ -7,7 +7,7 @@
 import {ChessboardMoveInput} from "./ChessboardMoveInput.js"
 import {COLOR, INPUT_EVENT_TYPE, BORDER_TYPE} from "./Chessboard.js"
 import {ChessboardPiecesAnimation} from "./ChessboardPiecesAnimation.js"
-import _ from 'lodash'
+import * as _ from 'lodash'
 
 export const SQUARE_COORDINATES = [
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
