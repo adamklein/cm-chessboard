@@ -39,7 +39,7 @@ export class ChessboardMoveInput {
 
     setMoveInputState(newState, params = undefined) {
 
-        // console.log("setMoveInputState", Object.keys(STATE)[this.moveInputState], "=>", Object.keys(STATE)[newState]);
+        //console.log("setMoveInputState", Object.keys(STATE)[this.moveInputState], "=>", Object.keys(STATE)[newState]);
 
         const prevState = this.moveInputState
         this.moveInputState = newState
@@ -193,8 +193,8 @@ export class ChessboardMoveInput {
         let name = pieceName.slice(1,2)
         this.draggablePiece = Svg.createSvg(document.body)
         this.draggablePiece.classList.add("cm-chessboard-draggable-piece")
-        this.draggablePiece.setAttribute("width", this.view.squareWidth)
-        this.draggablePiece.setAttribute("height", this.view.squareHeight)
+        this.draggablePiece.setAttribute("width", this.view.squareWidth * 1.5)
+        this.draggablePiece.setAttribute("height", this.view.squareHeight * 1.5)
         this.draggablePiece.setAttribute("style", "pointer-events: none")
         this.draggablePiece.setAttribute("color", (color === 'w') ? "#ffffff" : "#5f5955" )
         this.draggablePiece.name = pieceName
@@ -202,7 +202,7 @@ export class ChessboardMoveInput {
         const piece = Svg.addElement(this.draggablePiece, "use", {
             href: `${spriteUrl}#sprite-${name}${color}`
         })
-        const scaling = this.view.squareHeight / this.chessboard.props.sprite.size
+        const scaling = this.view.squareHeight * 1.5 / this.chessboard.props.sprite.size
         const transformScale = (this.draggablePiece.createSVGTransform())
         transformScale.setScale(scaling, scaling)
         piece.transform.baseVal.appendItem(transformScale)
@@ -210,10 +210,11 @@ export class ChessboardMoveInput {
 
     moveDraggablePiece(x, y) {
         this.draggablePiece.setAttribute("style",
-            `pointer-events: none; position: absolute; left: ${x - (this.view.squareHeight / 2)}px; top: ${y - (this.view.squareHeight / 2)}px`)
+            `pointer-events: none; position: absolute; left: ${x - (this.view.squareHeight * 0.75)}px; top: ${y - (this.view.squareHeight * 0.75)}px`)
     }
 
     onPointerDown(e) {
+        // console.log("Pointer down", e)
         if (e.type === "mousedown" && e.button === 0 || e.type === "touchstart") {
             const index = e.target.getAttribute("data-index")
             const pieceElement = this.view.getPiece(index)
@@ -222,15 +223,17 @@ export class ChessboardMoveInput {
                 pieceName = pieceElement.getAttribute("data-piece")
                 color = pieceName ? pieceName.substr(0, 1) : undefined
                 // allow scrolling, if not pointed on draggable piece
-                // if (color === "w" && this.chessboard.state.inputWhiteEnabled ||
-                //     color === "b" && this.chessboard.state.inputBlackEnabled) {
-                //     e.preventDefault()
-                // }
+                if (color === "w" && this.chessboard.state.inputWhiteEnabled ||
+                    color === "b" && this.chessboard.state.inputBlackEnabled) {
+                    e.preventDefault()
+                }
             }
             if (index) { // pointer on square
+
                 if (this.moveInputState !== STATE.waitForInputStart ||
                     this.chessboard.state.inputWhiteEnabled && color === "w" ||
                     this.chessboard.state.inputBlackEnabled && color === "b") {
+
                     let point
                     if (e.type === "mousedown") {
                         point = {x: e.clientX, y: e.clientY}

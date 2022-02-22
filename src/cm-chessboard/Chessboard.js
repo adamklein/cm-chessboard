@@ -59,11 +59,11 @@ export class Chessboard {
                 hoverMarker: MARKER_TYPE.frame // deprecated => moveToMarker // TODO remove in future
             },
             responsive: true, // resizes the board based on element size
-            animationDuration: 150, // pieces animation duration in milliseconds
+            animationDuration: 300, // pieces animation duration in milliseconds
             sprite: {
                 url: "./assets/images/chessboard-sprite.svg", // pieces and markers are stored as svg sprite
                 size: 40, // the sprite size, defaults to 40x40px
-                cache: true // cache the sprite inline, in the HTML
+                cache: true, // cache the sprite inline, in the HTML
             }
         }
         this.props = {}
@@ -149,10 +149,11 @@ export class Chessboard {
             if (fenNormalized !== currentFen) {
                 const prevSquares = this.state.squares.slice(0) // clone
                 this.state.setPosition(fen)
+                const nextSquares = this.state.squares.slice(0)
                 if (animated) {
-                    this.view.animatePieces(prevSquares, this.state.squares.slice(0), () => {
+                    this.view.animatePieces(prevSquares, nextSquares, () => {
                         resolve()
-                    })
+                    }) 
                 } else {
                     this.view.drawPieces(this.state.squares)
                     resolve()
@@ -199,6 +200,12 @@ export class Chessboard {
       this.view.drawArrows()
     }
 
+
+    removeArrow(fromSquare, toSquare, colorIndex=1) {
+       this.state.removeArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), colorIndex)
+       this.view.drawArrows()
+    }
+
     removeArrows() {
       this.state.removeArrows()
       this.view.drawArrows()
@@ -230,17 +237,6 @@ export class Chessboard {
 
     disableMoveInput() {
         this.view.disableMoveInput()
-    }
-
-    // TODO remove deprecated function
-    // noinspection JSUnusedGlobalSymbols
-    enableContextInput(eventHandler) {
-        console.warn("enableContextInput() is deprecated, use enableSquareSelect()")
-        this.enableSquareSelect(function (event) {
-            if (event.type === SQUARE_SELECT_TYPE.secondary) {
-                eventHandler(event)
-            }
-        })
     }
 
     // TODO remove deprecated function

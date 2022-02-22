@@ -105,7 +105,8 @@ export class ChessboardPiecesAnimation {
             return
         }
         const t = Math.min(1, timeDiff / this.duration)
-        const progress = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOut
+        //const progress = t < .5 ? 2 * t * t : -1 + (4 - 2 * t) * t // easeInOut
+        const progress = t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
         this.animatedElements.forEach((animatedItem) => {
             if (animatedItem.element) {
                 switch (animatedItem.type) {

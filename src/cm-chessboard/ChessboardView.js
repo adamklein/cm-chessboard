@@ -20,16 +20,6 @@ export const SQUARE_COORDINATES = [
     "a8", "b8", "c8", "d8", "e8", "f8", "g8", "h8"
 ]
 
-function makeid(length) {
-  var result           = '';
-  var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  var charactersLength = characters.length;
-  for ( var i = 0; i < length; i++ ) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
-}
-
 export class ChessboardView {
 
     constructor(chessboard, callbackAfterCreation) {
@@ -49,7 +39,7 @@ export class ChessboardView {
             // noinspection JSUnresolvedVariable
             if (typeof ResizeObserver !== "undefined") {
                 // noinspection JSUnresolvedFunction
-                this.resizeObserver = new ResizeObserver(_.debounce(() => this.handleResize(), 50, { leading: false, trailing: true }))
+                this.resizeObserver = new ResizeObserver(() => this.handleResize())
                 this.resizeObserver.observe(this.chessboard.element)
             } else {
                 this.resizeListener = this.handleResize.bind(this)
@@ -58,10 +48,8 @@ export class ChessboardView {
         }
 
         this.pointerDownListener = this.pointerDownHandler.bind(this)
-        this.chessboard.element.addEventListener("mousedown", this.pointerDownListener)
-        this.chessboard.element.addEventListener("touchstart", this.pointerDownListener, { passive: true })
-
-        this.arrow_marker_scope = makeid(10)
+        this.chessboard.element.addEventListener("mousedown", this.pointerDownListener, { passive: false })
+        this.chessboard.element.addEventListener("touchstart", this.pointerDownListener, { passive: false })
 
         this.createSvgAndGroups()
         this.updateMetrics()
@@ -95,19 +83,23 @@ export class ChessboardView {
     // Sprite //
 
     cacheSprite() {
-        const wrapperId = "chessboardSpriteCache"
-        if (!document.getElementById(wrapperId)) {
-            const wrapper = document.createElement("div")
-            wrapper.style.display = "none"
-            wrapper.id = wrapperId
-            document.body.appendChild(wrapper)
-            const xhr = new XMLHttpRequest()
-            xhr.open("GET", this.chessboard.props.sprite.url, true)
-            xhr.onload = function () {
-                wrapper.insertAdjacentHTML('afterbegin', xhr.response)
-            }
-            xhr.send()
+        const url = this.chessboard.props.sprite.url
+        const wrapperId = `chessboard-sprite-cache`
+
+        const el = document.getElementById(wrapperId)
+
+        if (el) el.remove()
+
+        const wrapper = document.createElement("div")
+        wrapper.style.display = "none"
+        wrapper.id = wrapperId
+        document.body.appendChild(wrapper)
+        const xhr = new XMLHttpRequest()
+        xhr.open("GET", url, true)
+        xhr.onload = function () {
+            wrapper.insertAdjacentHTML('afterbegin', xhr.response)
         }
+        xhr.send()
     }
 
     createSvgAndGroups() {
@@ -132,7 +124,7 @@ export class ChessboardView {
 
       for (var id of [1, 2, 3, 4, 5, 6]) {
         let m = Svg.addElement(defs, "marker", { 
-          id: `${this.arrow_marker_scope}-arrowhead-${id}`, 
+          id: `arrowhead-${id}`, 
           markerWidth: 4, 
           markerHeight: 8, 
           refX: 2, 
@@ -172,8 +164,9 @@ export class ChessboardView {
             this.updateMetrics()
             this.redraw()
         }
-        this.svg.setAttribute("width", "100%") // safari bugfix
-        this.svg.setAttribute("height", "100%")
+        // safari bugfix
+        this.svg.setAttribute("width", `${this.width}px`) 
+        this.svg.setAttribute("height",`${this.height}px`)
     }
 
     redraw() {
@@ -313,7 +306,7 @@ export class ChessboardView {
         'stroke': `var(--arrow-color-${id})`,
         'stroke-width': 5,
         'stroke-linecap': "round",
-        'marker-end': `url(#${this.arrow_marker_scope}-arrowhead-${id})`,
+        'marker-end': `url(#arrowhead-${id})`,
         'pointer-events': "none",
         'class': `cm-chessboard arrows arrow-${id}`,
         opacity: 0.5,
@@ -420,6 +413,7 @@ export class ChessboardView {
             this.animationRunning = true
             this.currentAnimation = new ChessboardPiecesAnimation(this, nextAnimation.fromSquares, nextAnimation.toSquares, this.chessboard.props.animationDuration / (this.animationQueue.length + 1), () => {
                 this.animationRunning = false
+                this.drawPieces(nextAnimation.toSquares)                
                 this.nextPieceAnimationInQueue()
                 if (nextAnimation.callback) {
                     nextAnimation.callback()

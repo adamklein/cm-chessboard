@@ -25,6 +25,15 @@ export class ChessboardState {
         this.arrows.push({indexFrom: indexFrom, indexTo: indexTo, colorIndex: colorIndex})
     }
 
+    removeArrow(indexFrom, indexTo, colorIndex=1) {
+        this.arrows = this.arrows.filter((arr) => {
+            if (arr.indexFrom == indexFrom && arr.indexTo == indexTo && arr.colorIndex == colorIndex) {
+                return false
+            }
+            return true
+        })
+    }
+
     removeArrows() {
         this.arrows = []
     }
