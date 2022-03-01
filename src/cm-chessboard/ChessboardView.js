@@ -7,7 +7,6 @@
 import {ChessboardMoveInput} from "./ChessboardMoveInput.js"
 import {COLOR, INPUT_EVENT_TYPE, BORDER_TYPE} from "./Chessboard.js"
 import {ChessboardPiecesAnimation} from "./ChessboardPiecesAnimation.js"
-import * as _ from 'lodash'
 
 export const SQUARE_COORDINATES = [
     "a1", "b1", "c1", "d1", "e1", "f1", "g1", "h1",
@@ -115,7 +114,8 @@ export class ChessboardView {
         this.boardGroup = Svg.addElement(this.svg, "g", {class: "board"})
         this.coordinatesGroup = Svg.addElement(this.svg, "g", {class: "coordinates"})
         this.markersGroup = Svg.addElement(this.svg, "g", {class: "markers"})
-        this.piecesGroup = Svg.addElement(this.svg, "g", {class: "pieces"})
+        this.piecesType = Svg.addElement(this.svg, "g", {class: this.chessboard.props.sprite.cssClass})
+        this.piecesGroup = Svg.addElement(this.piecesType, "g", {class: "pieces"})
         this.arrowsGroup = Svg.addElement(this.svg, "g", {class: "arrows"})
     }
 

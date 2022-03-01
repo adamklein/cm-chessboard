@@ -64,6 +64,7 @@ export class Chessboard {
                 url: "./assets/images/chessboard-sprite.svg", // pieces and markers are stored as svg sprite
                 size: 40, // the sprite size, defaults to 40x40px
                 cache: true, // cache the sprite inline, in the HTML
+                cssClass: "cburnett" // specifies color for pieces
             }
         }
         this.props = {}

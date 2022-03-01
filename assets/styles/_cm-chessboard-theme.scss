@@ -1,3 +1,16 @@
+@mixin cm-piece-theme($name, $color-white, $color-black,) {
+  .#{$name} {
+    .pieces {
+      .white-piece {
+        color: $color-white;
+      }
+      .black-piece {
+        color: $color-black;
+      }
+    }
+  }
+}
+
 @mixin cm-chessboard-theme($name,
 $square-white, $square-black,
 $coordinates-white: $square-black, $coordinates-black: $square-white,
