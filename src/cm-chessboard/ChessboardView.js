@@ -114,8 +114,7 @@ export class ChessboardView {
         this.boardGroup = Svg.addElement(this.svg, "g", {class: "board"})
         this.coordinatesGroup = Svg.addElement(this.svg, "g", {class: "coordinates"})
         this.markersGroup = Svg.addElement(this.svg, "g", {class: "markers"})
-        this.piecesType = Svg.addElement(this.svg, "g", {class: this.chessboard.props.sprite.cssClass})
-        this.piecesGroup = Svg.addElement(this.piecesType, "g", {class: "pieces"})
+        this.piecesGroup = Svg.addElement(this.svg, "g", {class: "pieces"})
         this.arrowsGroup = Svg.addElement(this.svg, "g", {class: "arrows"})
     }
 
@@ -341,7 +340,7 @@ export class ChessboardView {
         pieceGroup.transform.baseVal.appendItem(transform)
         const spriteUrl = this.chessboard.props.sprite.cache ? "" : this.chessboard.props.sprite.url
         const pieceUse = Svg.addElement(pieceGroup, "use", {
-            href: `${spriteUrl}#sprite-${name}${color}`,
+            href: `${spriteUrl}#${color}${name}`,
             class: pieceName
         })
         // center on square
@@ -367,6 +366,14 @@ export class ChessboardView {
 
     getPiece(index) {
         return this.piecesGroup.querySelector(`g[data-index='${index}']`)
+    }
+
+    getSquareOf(color, piece) {
+        const sq_str = this.piecesGroup.querySelector(`g[data-piece='${color}${piece}']`)?.getAttribute('data-index')
+        if (sq_str) {
+            const sq_int = parseInt(sq_str)
+            return SQUARE_COORDINATES[sq_int]
+        }
     }
 
     // Markers //

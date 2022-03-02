@@ -64,7 +64,6 @@ export class Chessboard {
                 url: "./assets/images/chessboard-sprite.svg", // pieces and markers are stored as svg sprite
                 size: 40, // the sprite size, defaults to 40x40px
                 cache: true, // cache the sprite inline, in the HTML
-                cssClass: "cburnett" // specifies color for pieces
             }
         }
         this.props = {}
@@ -113,6 +112,10 @@ export class Chessboard {
 
     getPiece(square) {
         return this.state.squares[this.state.squareToIndex(square)]
+    }
+
+    getSquareOf(color, piece) {
+        return this.view.getSquareOf(color, piece)
     }
 
     movePiece(squareFrom, squareTo, animated = true) {
