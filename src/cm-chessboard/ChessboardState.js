@@ -25,6 +25,13 @@ export class ChessboardState {
         this.arrows.push({indexFrom: indexFrom, indexTo: indexTo, colorIndex: colorIndex})
     }
 
+    hasArrow(indexFrom, indexTo, colorIndex=1) {
+        let idx = this.arrows.findIndex((arr) => {
+          return arr.indexFrom == indexFrom && arr.indexTo == indexTo && arr.colorIndex == colorIndex
+        })
+        return idx > -1
+    }
+
     removeArrow(indexFrom, indexTo, colorIndex=1) {
         this.arrows = this.arrows.filter((arr) => {
             if (arr.indexFrom == indexFrom && arr.indexTo == indexTo && arr.colorIndex == colorIndex) {

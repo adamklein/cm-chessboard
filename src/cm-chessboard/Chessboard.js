@@ -204,6 +204,10 @@ export class Chessboard {
       this.view.drawArrows()
     }
 
+    hasArrow(fromSquare, toSquare, colorIndex=1) {
+      return this.state.hasArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), colorIndex)
+    }
+
 
     removeArrow(fromSquare, toSquare, colorIndex=1) {
        this.state.removeArrow(this.state.squareToIndex(fromSquare), this.state.squareToIndex(toSquare), colorIndex)
